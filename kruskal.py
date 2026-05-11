@@ -1,4 +1,5 @@
 import networkx as nx
+import matplotlib.pyplot as plt
 
 nodos = ['A', 'B', 'C', 'D', 'E', 'F', 'Q']
 
@@ -57,9 +58,6 @@ print(f"Costo total MST: {costo}")
 for u, v, w in mst:
     print(f"  {u} {w} {v}")
 
-
-import matplotlib.pyplot as plt
-import networkx as nx
 
 G = nx.Graph()
 

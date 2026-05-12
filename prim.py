@@ -1,7 +1,7 @@
 # Prim algorith with python
 import heapq # Priority queue 
 import matplotlib.pyplot as plt
-import networkx as nx
+import networkx as nx # library for create graph
 
 Barrios = [ # Graph with neighborhoods and costs 
     (2, 'D', 'E'),
@@ -20,31 +20,31 @@ class Acueducto:
 
     def __init__(self, Barrios):
         self.Barrios = Barrios
-        self.mst = []
-        self.total = 0
+        self.mst = [] # All nodes with weights
+        self.total = 0 # Total sum for weights
 
     def contruccion(self):
-        ady = {nodo: [] for costo, Bar1, Bar2 in self.Barrios
-            for nodo in [Bar1, Bar2]
+        ady = {nodo: [] for costo, Bar1, Bar2 in self.Barrios # Convert a tuple to a dictionary
+            for nodo in [Bar1, Bar2] # iterate through the nodes
         }
             
         for costo, Bar1, Bar2 in Barrios:
             ady[Bar1].append((costo,Bar2))
             ady[Bar2].append((costo,Bar1))
 
-        visitados= set()
-        cola = [(0, 'D', 'D')]
+        visitados= set() # avoid duplicates
+        cola = [(0, 'D', 'D')] # initialize queue with the first node : D
 
-        while cola:
-            costo, origen, destino = heapq.heappop(cola)
+        while cola: # While in the queue are elements
+            costo, origen, destino = heapq.heappop(cola) # pop the element at low cost
 
             if destino in visitados:
                 continue 
 
             visitados.add(destino)
-            self.total += costo
+            self.total += costo # When a node is selected, its weight is added to the total
 
-            if origen != destino:
+            if origen != destino: # If the source and destination nodes are different, they are added to the MST
                 self.mst.append((origen, destino, costo))
 
             for wgt, vec in ady[destino]:
@@ -61,15 +61,15 @@ for a,b,c in red.mst:
 
 print(f"Total de red de acueducto: {red.total} metros ")
 
-# Graph with network nx
+#----------------------------------------------------------------------------------------- Graph with network nx------------------------------------------------------------------
 
 G = nx.Graph()
 
 for origen, destino, costo in red.mst:
-    G.add_edge(origen, destino, weight=costo)
+    G.add_edge(origen, destino, weight=costo) # Create the edge for nodes
 
 
-pos = nx.spring_layout(G)
+pos = nx.spring_layout(G) 
 
 nx.draw(G, pos, with_labels = True)
 

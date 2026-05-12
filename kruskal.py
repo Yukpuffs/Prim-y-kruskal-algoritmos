@@ -1,9 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-nodos = ['A', 'B', 'C', 'D', 'E', 'F', 'Q']
+nodos = ['A', 'B', 'C', 'D', 'E', 'F', 'Q'] # Nodes in the graph
 
-aristas = [
+aristas = [ # all the conections between nodes
     (2, 'D', 'E'),
     (6, 'D', 'B'),
     (9, 'E', 'B'),
@@ -16,17 +16,17 @@ aristas = [
     (11, 'E', 'F')
 ]
 
-class Acueducto_k:
+class Acueducto_k: 
     def __init__(self, nodos):
-        self.padre = {n: n for n in nodos}
-        self.rango = {n: 0 for n in nodos}
+        self.padre = {n: n for n in nodos} # Each node is its own parent
+        self.rango = {n: 0 for n in nodos} 
 
-    def buscar(self, x):
+    def buscar(self, x): # Determine which node is the parent of each node
         if self.padre[x] != x:
             self.padre[x] = self.buscar(self.padre[x])
         return self.padre[x]
     
-    def unir(self, x, y):
+    def unir(self, x, y): # Connect the nodes, making sure they are different so that they do not form a cycle
         rx, ry = self.buscar(x), self.buscar(y)
         if rx == ry:
             return False
@@ -38,26 +38,32 @@ class Acueducto_k:
             self.rango[rx] += 1
         return True
 
-def Kruskal(nodos, aristas):
+class Algoritmo:
+  def __init__(self):
+    pass
 
-    ordenado = sorted(aristas)
-    conexion = Acueducto_k(nodos)
-    mst = []
-    total = 0
+  def kruskal(self, nodos, aristas):
+    ordenado = sorted(aristas) # sort the nodes from smallest to largest
+    uf = Acueducto_k(nodos)
+    mst = [] # All nodes with weights
+    total = 0 # Total sum for weights
 
     for peso, u, v in ordenado:
-        if conexion.unir(u, v):
-            mst.append((u, v, peso))
-            total += peso
-            if len(mst) == len(nodos) - 1:
-                break
+      if uf.unir(u, v):
+        mst.append((u, v, peso))
+        total += peso
+        if len(mst) == len(nodos) - 1:
+          break
     return mst, total
 
-mst, costo = Kruskal(nodos, aristas)
+algo = Algoritmo()
+mst, costo = algo.kruskal(nodos, aristas)
+
 print(f"Costo total MST: {costo}")
 for u, v, w in mst:
     print(f"  {u} {w} {v}")
 
+#----------------------------------------------------------------------------------------- Graph with network nx------------------------------------------------------------------
 
 G = nx.Graph()
 
